@@ -117,13 +117,13 @@ class robust_fpt {
     floating_point_type fpv = this->fpv_ + that.fpv_;
     if ((!is_neg(this->fpv_) && !is_neg(that.fpv_)) ||
         (!is_pos(this->fpv_) && !is_pos(that.fpv_))) {
-      this->re_ = (std::max)(this->re_, that.re_) + ROUNDING_ERROR;
+      this->re_ = (std::max)(this->re_, that.re_) + static_cast<int>(ROUNDING_ERROR);
     } else {
       floating_point_type temp =
         (this->fpv_ * this->re_ - that.fpv_ * that.re_) / fpv;
       if (is_neg(temp))
         temp = -temp;
-      this->re_ = temp + ROUNDING_ERROR;
+      this->re_ = temp + static_cast<int>(ROUNDING_ERROR);
     }
     this->fpv_ = fpv;
     return *this;
@@ -133,13 +133,13 @@ class robust_fpt {
     floating_point_type fpv = this->fpv_ - that.fpv_;
     if ((!is_neg(this->fpv_) && !is_pos(that.fpv_)) ||
         (!is_pos(this->fpv_) && !is_neg(that.fpv_))) {
-       this->re_ = (std::max)(this->re_, that.re_) + ROUNDING_ERROR;
+       this->re_ = (std::max)(this->re_, that.re_) + static_cast<int>(ROUNDING_ERROR);
     } else {
       floating_point_type temp =
         (this->fpv_ * this->re_ + that.fpv_ * that.re_) / fpv;
       if (is_neg(temp))
          temp = -temp;
-      this->re_ = temp + ROUNDING_ERROR;
+      this->re_ = temp + static_cast<int>(ROUNDING_ERROR);
     }
     this->fpv_ = fpv;
     return *this;
@@ -152,7 +152,7 @@ class robust_fpt {
   }
 
   robust_fpt& operator/=(const robust_fpt& that) {
-    this->re_ += that.re_ + ROUNDING_ERROR;
+    this->re_ += that.re_ + static_cast<int>(ROUNDING_ERROR);
     this->fpv_ /= that.fpv_;
     return *this;
   }
@@ -162,13 +162,13 @@ class robust_fpt {
     relative_error_type re;
     if ((!is_neg(this->fpv_) && !is_neg(that.fpv_)) ||
         (!is_pos(this->fpv_) && !is_pos(that.fpv_))) {
-      re = (std::max)(this->re_, that.re_) + ROUNDING_ERROR;
+      re = (std::max)(this->re_, that.re_) + static_cast<int>(ROUNDING_ERROR);
     } else {
       floating_point_type temp =
         (this->fpv_ * this->re_ - that.fpv_ * that.re_) / fpv;
       if (is_neg(temp))
         temp = -temp;
-      re = temp + ROUNDING_ERROR;
+      re = temp + static_cast<int>(ROUNDING_ERROR);
     }
     return robust_fpt(fpv, re);
   }
@@ -178,33 +178,33 @@ class robust_fpt {
     relative_error_type re;
     if ((!is_neg(this->fpv_) && !is_pos(that.fpv_)) ||
         (!is_pos(this->fpv_) && !is_neg(that.fpv_))) {
-      re = (std::max)(this->re_, that.re_) + ROUNDING_ERROR;
+      re = (std::max)(this->re_, that.re_) + static_cast<int>(ROUNDING_ERROR);
     } else {
       floating_point_type temp =
         (this->fpv_ * this->re_ + that.fpv_ * that.re_) / fpv;
       if (is_neg(temp))
         temp = -temp;
-      re = temp + ROUNDING_ERROR;
+      re = temp + static_cast<int>(ROUNDING_ERROR);
     }
     return robust_fpt(fpv, re);
   }
 
   robust_fpt operator*(const robust_fpt& that) const {
     floating_point_type fpv = this->fpv_ * that.fpv_;
-    relative_error_type re = this->re_ + that.re_ + ROUNDING_ERROR;
+    relative_error_type re = this->re_ + that.re_ + static_cast<int>(ROUNDING_ERROR);
     return robust_fpt(fpv, re);
   }
 
   robust_fpt operator/(const robust_fpt& that) const {
     floating_point_type fpv = this->fpv_ / that.fpv_;
-    relative_error_type re = this->re_ + that.re_ + ROUNDING_ERROR;
+    relative_error_type re = this->re_ + that.re_ + static_cast<int>(ROUNDING_ERROR);
     return robust_fpt(fpv, re);
   }
 
   robust_fpt sqrt() const {
     return robust_fpt(get_sqrt(fpv_),
                       re_ * static_cast<relative_error_type>(0.5) +
-                      ROUNDING_ERROR);
+                      static_cast<int>(ROUNDING_ERROR));
   }
 
  private:
